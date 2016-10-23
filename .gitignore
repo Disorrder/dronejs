@@ -1,0 +1,11 @@
+/npm-debug.log
+/.build
+/build
+/.tmp
+/node_modules
+/bower_components
+/typings
+/config.js
+/app/config.js
+/regions/data
+.DS_Store
