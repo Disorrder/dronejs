@@ -1,20 +1,32 @@
+const au = require('autoit');
 const robotjs = require('robotjs');
+
+class Pixel { // ?
+    constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+    }
+}
 
 class Screen {
     getSize() {
         return robotjs.getScreenSize();
     }
 
-    get width() {
-        return robotjs.getScreenSize().width;
+    get width() { return this.getSize().width; }
+    get height() { return this.getSize().height; }
+
+    getPixel(x, y) {
+        return robotjs.getPixelColor(x, y);
     }
 
-    get height() {
-        return robotjs.getScreenSize().height;
+    getPixel2(x, y) {
+        return au.PixelGetColor(x, y);
     }
 
-    capture() { // x, y, width, height
-        return robotjs.screen.capture.apply(robotjs.screen, arguments);
+    capture(x, y, width, height) { // return bitmap object
+        return robotjs.screen.capture(x, y, width, height);
     }
 }
 

@@ -26,6 +26,14 @@ class Window {
         au.WinSetTitle(this.hwnd, val);
     }
 
+    getClassList() {
+        return au.WinGetClassList(this.hwnd).split('\n').filter((v) => v);
+    }
+
+    getChildren() {
+        return Window.EnumWindows(this.hwnd);
+    }
+
     // --- size and position shorthands ---
     getPos() {
         var {left, top, right, bottom} = au.WinGetPos(this.hwnd);
@@ -83,12 +91,12 @@ class Window {
     set height(val) { this.setPosObj({width: this.width, height: val}); }
 
     // --- abstract functions ---
-    sendMessage() {
-
+    sendMessage(message, wParam, lParam) {
+        return au.SendMessage(this.hwnd, message, wParam, lParam);
     }
 
-    postMessage() {
-
+    postMessage(message, wParam, lParam) {
+        return au.PostMessage(this.hwnd, message, wParam, lParam);
     }
 
     // --- state shorthands ---
@@ -117,6 +125,7 @@ class Window {
 
     capture() {
         // TODO make bitmap of window
+        // use PrintWindow of user32.dll
     }
 
     static minimizeAll() {
@@ -151,18 +160,19 @@ class Window {
         });
     }
 
-    static EnumWindows() {
-        return enumWindows().map((hwnd) => {
+    static EnumWindows(hwnd) {
+        return enumWindows(hwnd).map((hwnd) => {
             return {
                 hwnd,
                 pid: au.WinGetProcess(hwnd),
-                title: au.WinGetTitle(hwnd)
+                title: au.WinGetTitle(hwnd),
+                classList: au.WinGetClassList(hwnd).split('\n').filter((v) => v) // idk why not working
             }
         });
     }
 }
 
-function enumWindows() {
+function enumWindows(hwnd = null) {
     var ref = require('ref');
     var ffi = require('ffi');
 
@@ -170,7 +180,7 @@ function enumWindows() {
     var handles = [];
 
     var user32 = ffi.Library('user32.dll', {
-        EnumWindows: ['bool', [voidPtr, 'int32']]
+        EnumChildWindows: ['bool', ['int', voidPtr, 'int32']]
     });
 
     var windowProc = ffi.Callback('bool', ['long', 'int32'], function(hwnd, lParam) {
@@ -178,7 +188,7 @@ function enumWindows() {
         return true;
     });
 
-    user32.EnumWindows(windowProc, 0);
+    user32.EnumChildWindows(hwnd, windowProc, 0);
     return handles;
 }
 
