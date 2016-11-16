@@ -1,3 +1,4 @@
+const ref = require('ref');
 const _ = require('lodash');
 const code = require('./apiConst');
 const au = require('autoit');
@@ -45,7 +46,7 @@ const RU = "ёйцукенгшщзхъфывапролджэячсмитьбю."
 class Keyboard {
     constructor(hwnd) {
         this.hwnd = hwnd;
-        this.delay = 300;
+        this.delay = 10;
 
         // this._ctrl = false;
         // this._alt = false;
@@ -70,9 +71,11 @@ class Keyboard {
         ['ctrl', 'alt', 'shift', 'win'].forEach((v) => {
             if (keyCode === keys[v]) this[`_${v}`] = true;
         });
-        au.PostMessage(this.hwnd, au.WM_KEYDOWN, keyCode, 0);
-        // au.SendMessage(this.hwnd, au.WM_KEYDOWN, keyCode, MapVirtualKey(keyCode));
-        console.log('keydown', keyCode.toString(16), MapVirtualKey(keyCode));
+        var lParam = MapVirtualKey(keyCode) << 16 | 1;
+        // lParam = 0
+        console.log('keydown', keyCode.toString(16), lParam, lParam.toString(2));
+        au.PostMessage(this.hwnd, au.WM_KEYDOWN, keyCode, lParam);
+        // au.SendMessage(this.hwnd, au.WM_KEYDOWN, keyCode, lParam);
         if (this.delay) au.Sleep(this.delay);
     }
 
@@ -81,17 +84,22 @@ class Keyboard {
         ['ctrl', 'alt', 'shift', 'win'].forEach((v) => {
             if (keyCode === keys[v]) this[`_${v}`] = false;
         });
-        au.PostMessage(this.hwnd, au.WM_KEYUP, keyCode, 0);
-        // au.SendMessage(this.hwnd, au.WM_KEYUP, keyCode, MapVirtualKey(keyCode));
-        console.log('keyup', keyCode.toString(16), MapVirtualKey(keyCode));
+        var bit32 = 0x80000000;
+        var lParam = 1 << 30 | MapVirtualKey(keyCode) << 16 | 1;
+        lParam += bit32;
+        // lParam = 0
+        console.log('keyup', keyCode.toString(16), lParam, lParam.toString(2));
+        au.PostMessage(this.hwnd, au.WM_KEYUP, keyCode, lParam);
+        // au.SendMessage(this.hwnd, au.WM_KEYUP, keyCode, lParam);
         if (this.delay) au.Sleep(this.delay);
     }
 
     _char(keyCode) {
         if (_.isString(keyCode)) keyCode = keys[keyCode];
-        au.PostMessage(this.hwnd, au.WM_CHAR, keyCode, 0);
-        // au.SendMessage(this.hwnd, au.WM_KEYUP, keyCode, MapVirtualKey(keyCode));
-        console.log('char', keyCode.toString(16), MapVirtualKey(keyCode));
+        var lParam = 0;
+        console.log('char', keyCode.toString(16), lParam, lParam.toString(2));
+        au.PostMessage(this.hwnd, au.WM_CHAR, keyCode, lParam);
+        // au.SendMessage(this.hwnd, au.WM_KEYUP, keyCode, lParam);
         if (this.delay) au.Sleep(this.delay);
     }
 

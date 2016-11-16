@@ -16,11 +16,12 @@ try {
 console.log('screen size:', screen.width, screen.height);
 
 var wnd = Window.find('Безымянный');
-
-// var pid = Window.open('notepad.exe');
-// console.log('pid', pid);
-// au.Sleep(500);
-// var wnd = Window.findByPid(pid);
+if (!wnd) {
+    var pid = Window.open('notepad.exe');
+    console.log('pid', pid);
+    au.Sleep(500);
+    wnd = Window.findByPid(pid);
+}
 
 console.log(wnd.title);
 // wnd.setPos(0, 0, 300, 300);
@@ -30,10 +31,11 @@ console.log(wnd.title);
 
 // var kb = new Keyboard(wnd.hwnd);
 var kb = new Keyboard(wnd.getChildren()[0].hwnd);
-kb.keydown('a');
-kb.keyup('a');
-kb.pressKey('b');
-kb._char('c');
+kb.keydown('b');
+au.Sleep(777)
+kb.keyup('b');
+kb.pressKey('c');
+kb._char('d');
 
 console.log('classes:', wnd.getClassList());
 console.log(wnd.getChildren());
