@@ -2,7 +2,7 @@ const child_process = require('child_process');
 const _ = require('lodash');
 const au = require('autoit');
 const robotjs = require('robotjs');
-const apiConst = require('./apiConst');
+const apiConst = require('./win/apiConst');
 
 au.Init();
 
@@ -13,10 +13,7 @@ class Window {
     }
 
     get pid() {
-        return au.WinGetProcess(this.hwnd);
-    }
-    getPid() { // may be delete idk
-        return au.WinGetProcess(this.hwnd);
+        return this._pid || this._pid = au.WinGetProcess(this.hwnd);
     }
 
     get title() {
@@ -41,15 +38,17 @@ class Window {
         var height = bottom - top;
         return {left, top, width, height};
     }
-    setPos(left, top, width, height) {
-        this.setPosObj({left, top, width, height});
-    }
-    setPosObj(val) { // accept pixels, float percents and text["full, half, quarter, left, top, right, bottom, center"]
-        var {width: screenWidth, height: screenHeight} = robotjs.getScreenSize();
-        var {left, top, width, height} = val;
+    setPos(left, top, width, height) { // accept pixels, float percents and text["full, half, quarter, left, top, right, bottom, center"]
+        if (_.isObject(left)) {
+            {left, top, width, height} = left;
+        }
+
+        var {width: screenWidth, height: screenHeight} = robotjs.getScreenSize(); // TODO: robot-js
 
         if (!top && top !== 0) top = this.top;
         if (!left && left !== 0) left = this.left;
+        if (!width && width !== 0) width = this.width;
+        if (!height && height !== 0) height = this.height;
 
         if (width === 'full') width = screenWidth;
         if (height === 'full') height = screenHeight;
@@ -79,16 +78,16 @@ class Window {
     }
 
     get top() { return this.getPos().top; }
-    set top(val) { this.setPosObj({top: val}); }
+    set top(val) { this.setPos({top: val}); }
 
     get left() { return this.getPos().left; }
-    set left(val) { this.setPosObj({left: val}); }
+    set left(val) { this.setPos({left: val}); }
 
     get width() { return this.getPos().width; }
-    set width(val) { this.setPosObj({width: val}); }
+    set width(val) { this.setPos({width: val}); }
 
     get height() { return this.getPos().height; }
-    set height(val) { this.setPosObj({width: this.width, height: val}); }
+    set height(val) { this.setPos({height: val}); }
 
     // --- abstract functions ---
     sendMessage(message, wParam, lParam) {

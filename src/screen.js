@@ -11,22 +11,19 @@ class Pixel { // ?
 
 class Screen {
     getSize() {
-        return robotjs.getScreenSize();
+        return robotjs.getScreenSize(); // TODO: robot-js
     }
 
     get width() { return this.getSize().width; }
     get height() { return this.getSize().height; }
 
     getPixel(x, y) {
-        return robotjs.getPixelColor(x, y);
-    }
-
-    getPixel2(x, y) {
         return au.PixelGetColor(x, y);
+        // return robotjs.getPixelColor(x, y);
     }
 
     capture(x, y, width, height) { // return bitmap object
-        return robotjs.screen.capture(x, y, width, height);
+        // return robotjs.screen.capture(x, y, width, height);
     }
 }
 
