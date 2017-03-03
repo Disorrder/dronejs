@@ -11,13 +11,13 @@
     "robotjs": "^0.4.5"
   },
   "devDependencies": {},
-  "scripts": {
-    "gulp": "./node_modules/.bin/gulp"
-  },
   "engine": {
-    "node": ">=7.1.0"
+    "node": ">=6.0.0 && <7.0.0"
   },
   "config": {
     "msvs_version": 2015
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }

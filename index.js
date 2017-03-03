@@ -1,3 +1,3 @@
-var test = require('./tests/win.js');
+var test = require('./tests/mac.js');
 
 test.run();

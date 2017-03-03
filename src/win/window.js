@@ -2,7 +2,6 @@ const child_process = require('child_process');
 const _ = require('lodash');
 const au = require('autoit');
 const robotjs = require('robotjs');
-const apiConst = require('./win/apiConst');
 
 au.Init();
 
