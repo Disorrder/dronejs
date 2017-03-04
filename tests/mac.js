@@ -11,11 +11,14 @@ function run() {
 
     // -- window --
     if (Window.isAxEnabled()) {
-        var list = robot.Window.getList(".*");
+        var list = robot.Window.getList();
+        list = list.map((v)=>v.title)
         console.log(list);
 
         var wnd = robot.Window.getActive();
-        console.log(wnd, wnd.getTitle(), wnd.isValid(), wnd.isMinimized(), wnd.isMaximized());
+        console.log(wnd, wnd.getTitle(), wnd.isValid(), wnd.isMinimized(), wnd.isMaximized(), wnd.active);
+        wnd.blink();
+        // wnd.blur(); wnd.focus();
     } else {
         // console.log('Ax is not enabled :((');
     }
