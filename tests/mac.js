@@ -1,5 +1,6 @@
 const robot = require('robot-js');
 var Window = require('../src/robot/window');
+var _Window = require('../src/win/window');
 
 function run() {
     // -- mouse --
@@ -15,8 +16,8 @@ function run() {
         list = list.map((v)=>v.title)
         console.log(list);
 
-        var wnd = robot.Window.getActive();
-        console.log(wnd, wnd.getTitle(), wnd.isValid(), wnd.isMinimized(), wnd.isMaximized(), wnd.active);
+        var wnd = _Window.getActive();
+        console.log(wnd, wnd.active, wnd.getClassList());
         wnd.blink();
         // wnd.blur(); wnd.focus();
     } else {
