@@ -1,5 +1,3 @@
-const au = require('autoit');
-
 var $ = {};
 
 $.WIN_STATE_EXISTS    = 0b000001;
@@ -155,4 +153,3 @@ $.VK_LMENU          = 0xA4          // Left MENU key
 $.VK_RMENU          = 0xA5          // Right MENU key
 
 module.exports = $;
-Object.assign(au, $)

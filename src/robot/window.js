@@ -1,7 +1,8 @@
 const _ = require('lodash');
 const robot = require('robot-js');
+var Window = robot.Window;
 
-Object.defineProperties(robot.Window.prototype, {
+Object.defineProperties(Window.prototype, {
     exists: {
         get() { console.log('EXIII'); return this.isValid() }
     },
@@ -35,15 +36,15 @@ Object.defineProperties(robot.Window.prototype, {
     },
 
     active: { // not writable
-        get() { return robot.Window.getActive().eq(this) },
+        get() { return Window.getActive().eq(this) },
         // set(val) {  }
     },
 
     blur: { // TODO?: fix desktop blinking
-        value() { robot.Window.setActive(ProgramManager); return this; }
+        value() { Window.setActive(ProgramManager); return this; }
     },
     focus: {
-        value() { robot.Window.setActive(this); return this; }
+        value() { Window.setActive(this); return this; }
     },
 
     // -- boundary --
@@ -121,29 +122,29 @@ Object.defineProperties(robot.Window.prototype, {
     },
 });
 
-Object.defineProperties(robot.Window, {
+Object.defineProperties(Window, {
     find: {
         value(title) {
-            var list = robot.Window.getList(`.*${title}.*`);
+            var list = Window.getList(`.*${title}.*`);
             if (list.length > 1) console.warn('API WARN: found more than 1 window with title '+title); // experimantal
             return list[0];
         }
     },
     findByPid: {
         value(pid) {
-            return robot.Window.getList().find((v) => v.pid === pid);
+            return Window.getList().find((v) => v.pid === pid);
         }
     },
     getListByPid: {
         value(pid) {
-            return robot.Window.getList().filter((v) => v.pid === pid);
+            return Window.getList().filter((v) => v.pid === pid);
         }
     }
 });
 
-const ProgramManager = robot.Window.find('Program Manager');
+const ProgramManager = Window.find('Program Manager');
 
-var q = new robot.Window(200);
+var q = new Window(200);
 console.log(q.exists);
 
-module.exports = robot.Window;
+module.exports = Window;

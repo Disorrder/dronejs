@@ -1,6 +1,6 @@
 const _ = require('lodash');
-const Window = require('../robot/window');
 const au = require('autoit');
+const Window = require('../robot/window');
 
 au.Init();
 

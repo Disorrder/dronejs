@@ -1,4 +1,5 @@
-const code = require('./apiConst');
+const robot = require('robot-js');
+const code = require('./win/apiConst');
 
 var keys = {
     'back':     code.VK_BACKSPACE, // does it mean browser back?
@@ -29,12 +30,31 @@ var keys = {
     'rctrl':    code.VK_RCONTROL,
     'lalt':     code.VK_LMENU,
     'ralt':     code.VK_RMENU,
+
+    '=':        robot.KEY_EQUAL,
+    '(':        robot.KEY_LBRACKET,
+    ')':        robot.KEY_RBRACKET,
+    '\\':       robot.KEY_BACKSLASH,
+    ';':        robot.KEY_SEMICOLON,
+    '"':        robot.KEY_QUOTE,
+    ',':        robot.KEY_COMMA,
+    '~':        robot.KEY_PERIOD,
 }
 
-for (let key in code) {
-    if (key.indexOf('VK_') < 0) continue;
-    let keyName = key.substr(3).toLowerCase();
-    keys[keyName] = code[key];
+for (let k in robot) {
+    if (k.indexOf('KEY_') === 0) {
+        let name = k.substr(4).toLowerCase();
+        if (name in keys) continue;
+        keys[name] = robot[k];
+    }
+}
+
+for (let k in code) {
+    if (k.indexOf('VK_') === 0) {
+        let name = k.substr(3).toLowerCase();
+        if (name in keys) continue;
+        keys[name] = code[k];
+    }
 }
 
 module.exports = keys;
