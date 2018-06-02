@@ -6,8 +6,9 @@ Run this in PowerShell with Administrator:
  - `npm install --global --production windows-build-tools`
  Make sure Python and Visual C++ Build Tools installed successfully
  - `npm i -g node-gyp`
- - set PATH `PYTHON=C:\Users\%USERPROFILE%\.windows-build-tools\python27\python.exe` or smth like this
+ - `set PYTHON=%USERPROFILE%\.windows-build-tools\python27\python.exe` or smth like this
  - `npm i`
+ 
 Can help: http://stackoverflow.com/questions/32556295/npm-install-error-the-build-tools-for-v120-platform-toolset-v120-cannot
 
 ### OS X
